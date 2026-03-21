@@ -12,7 +12,7 @@ function formatBytes(bytes: number): string {
 }
 
 export const Loading = () => {
-  const { loaded, total, percentage } = useSyncExternalStore(
+  const { loaded, total, percentage, isCompressed } = useSyncExternalStore(
     wasmProgressStore.subscribe,
     wasmProgressStore.getSnapshot,
   );
@@ -37,7 +37,9 @@ export const Loading = () => {
           </div>
           {hasProgress ? (
             <span className="loading__stats">
-              {formatBytes(loaded)} / {formatBytes(total)} ({Math.round(percentage)}%)
+              {isCompressed
+                ? `${formatBytes(loaded)} transferred`
+                : `${formatBytes(loaded)} / ${formatBytes(total)} (${Math.round(percentage)}%)`}
             </span>
           ) : (
             <span className="loading__stats">Initializing&hellip;</span>
