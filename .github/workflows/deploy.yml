@@ -2,7 +2,7 @@ name: Deploy go-chaff playround to gh pages
 
 on:
   push:
-    branches: ['main', 'feat/initial-test']
+    branches: ['main']
   workflow_dispatch:
 
 permissions:
