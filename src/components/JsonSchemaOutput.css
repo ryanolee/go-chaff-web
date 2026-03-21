@@ -1,0 +1,101 @@
+.json-output-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    font-family: 'Consolas', 'Courier New', monospace;
+}
+
+.json-output-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.75rem;
+    background-color: #252526;
+    border-bottom: 1px solid #333;
+    flex-shrink: 0;
+}
+
+.json-output-toolbar span {
+    font-size: 0.75rem;
+    color: #858585;
+    user-select: none;
+}
+
+.json-output-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.json-output-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.json-output-toggle .toggle-track {
+    width: 32px;
+    height: 16px;
+    background-color: #3c3c3c;
+    border-radius: 8px;
+    border: 1px solid #555;
+    transition: background-color 0.2s ease;
+    position: relative;
+}
+
+.json-output-toggle input:checked + .toggle-track {
+    background-color: #264f78;
+    border-color: #569cd6;
+}
+
+.json-output-toggle .toggle-track::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 10px;
+    height: 10px;
+    background-color: #858585;
+    border-radius: 50%;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.json-output-toggle input:checked + .toggle-track::after {
+    transform: translateX(16px);
+    background-color: #d4d4d4;
+}
+
+.json-output-content {
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Styled JSON viewer wrapper */
+.json-output-content .json-viewer-wrapper {
+    height: 100%;
+    overflow: auto;
+    padding: 0.5rem;
+}
+
+/* Scrollbar styling for tree view */
+.json-output-content .json-viewer-wrapper::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.json-output-content .json-viewer-wrapper::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+
+.json-output-content .json-viewer-wrapper::-webkit-scrollbar-thumb {
+    background: #424242;
+    border-radius: 5px;
+}
+
+.json-output-content .json-viewer-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

@@ -1,0 +1,18 @@
+.main{
+    padding: initial
+}
+
+.separator{
+    border: 3px solid #333;
+}
+
+.separator:focus {
+    outline: none;
+}
+
+.panel {
+    min-width: 10px;
+    min-height: 10px;
+    overflow: hidden;
+    border-radius: 5px;
+}
