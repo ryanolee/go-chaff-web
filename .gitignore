@@ -1,0 +1,5 @@
+node_modules
+dist
+go/codegen/schemas/*
+go/codegen/types/*
+static/main.wasm

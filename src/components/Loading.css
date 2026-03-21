@@ -1,0 +1,113 @@
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #1e1e1e;
+}
+
+.loading__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2.5rem 3rem;
+  background-color: #252526;
+  border: 1px solid #333;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.loading__mascot {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  animation: loading-wiggle 1.2s ease-in-out infinite;
+  filter: drop-shadow(0 4px 12px rgba(86, 156, 214, 0.3));
+}
+
+@keyframes loading-wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  15% {
+    transform: rotate(-12deg) scale(1.05);
+  }
+  30% {
+    transform: rotate(10deg) scale(1.05);
+  }
+  45% {
+    transform: rotate(-8deg) scale(1.02);
+  }
+  60% {
+    transform: rotate(6deg) scale(1.02);
+  }
+  75% {
+    transform: rotate(-3deg) scale(1);
+  }
+}
+
+.loading__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  width: 260px;
+}
+
+.loading__title {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #d4d4d4;
+  letter-spacing: 0.02em;
+}
+
+.loading__progress {
+  width: 100%;
+  height: 6px;
+  background-color: #3c3c3c;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.loading__progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #264f78, #569cd6);
+  transition: width 0.3s ease;
+}
+
+/* Indeterminate shimmer when no content-length is available */
+.loading__progress-fill:not([style*="width"]),
+.loading__progress-fill[style*="undefined"] {
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    #264f78 0%,
+    #569cd6 40%,
+    #264f78 80%
+  );
+  background-size: 200% 100%;
+  animation: loading-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes loading-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.loading__stats {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: #858585;
+  letter-spacing: 0.03em;
+}
