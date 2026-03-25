@@ -1,0 +1,8 @@
+{
+    "go.gopath": "/home/ryanolee/.gvm/pkgsets/go1.25.8/global/",
+    "go.goroot": "/home/ryanolee/.gvm/gos/go1.25.8/",
+    "go.toolsEnvVars": {
+        "GOOS": "js",
+        "GOARCH": "wasm"
+    }
+}

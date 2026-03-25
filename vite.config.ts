@@ -7,37 +7,54 @@ import { globSync, existsSync, mkdirSync } from 'fs';
 import { compile} from 'json-schema-to-typescript'
 import { readFile, writeFile } from 'fs/promises';
 
-async function compileGoWasm() {
-  console.log('Compiling Go code to WebAssembly...');
-  const goPath = path.resolve(__dirname, 'go/wasm')
-  const codegenPath = path.resolve(__dirname, 'go/codegen')
-  const outDir = path.resolve(__dirname, 'static');
-  const typesOutDir = path.resolve(__dirname, 'go/codegen/types');
-  child_process.execSync(`GOOS=js GOARCH=wasm go build -o ${outDir}/main.wasm .`, { stdio: 'inherit', cwd: goPath });
-  
-  console.log('Converting Go types to JSON Schemas...');
-  child_process.execSync('go run main.go', { stdio: 'inherit', cwd: codegenPath });
+const goWasmDir = path.resolve(__dirname, 'go/wasm');
+const codegenDir = path.resolve(__dirname, 'go/codegen');
+const wasmOutDir = path.resolve(__dirname, 'static');
+const typesOutDir = path.resolve(__dirname, 'go/codegen/types');
 
-  console.log('Creating typescript bindings for Go-generated JSON Schemas...');
+function buildWasmBinary() {
+  console.log('Compiling Go code to WebAssembly...');
+  child_process.execSync(
+    `GOOS=js GOARCH=wasm go build -o ${wasmOutDir}/main.wasm .`,
+    { stdio: 'inherit', cwd: goWasmDir },
+  );
+}
+
+function generateJsonSchemas() {
+  console.log('Converting Go types to JSON Schemas...');
+  child_process.execSync('go run main.go', { stdio: 'inherit', cwd: codegenDir });
+}
+
+async function generateTypeScriptBindings() {
+  console.log('Creating TypeScript bindings for Go-generated JSON Schemas...');
   if (!existsSync(typesOutDir)) {
     mkdirSync(typesOutDir, { recursive: true });
   }
 
-  await Promise.all(globSync(path.resolve(codegenPath, 'schemas/**/*.json')).map(async (schemaPath) => {
+  const schemaFiles = globSync(path.resolve(codegenDir, 'schemas/**/*.json'));
+  await Promise.all(schemaFiles.map(async (schemaPath) => {
     const schemaContent = await readFile(schemaPath, 'utf-8');
     const schema = JSON.parse(schemaContent);
     const tsContent = await compile(schema, path.basename(schemaPath, '.json'), { bannerComment: '' });
     const tsOutputPath = path.resolve(typesOutDir, `${path.basename(schemaPath, '.json')}.ts`);
     await writeFile(tsOutputPath, tsContent, 'utf-8');
-  })).then(() => {
-    console.log('TypeScript bindings generated successfully.');
-  }).catch((error) => {
-    console.error('Error generating TypeScript bindings:', error);
-  });
-  
+  }));
+  console.log('TypeScript bindings generated successfully.');
+}
 
+async function compileGoWasm() {
+  buildWasmBinary();
+  generateJsonSchemas();
+  await generateTypeScriptBindings();
   console.log('Go code compiled successfully.');
 }
+
+const goChaffVersion = child_process
+  .execSync(`go list -m all | grep github.com/ryanolee/go-chaff | awk '{print $2}'`, { cwd: goWasmDir })
+  .toString()
+  .trim();
+const buildDate = new Date().toISOString().split('T')[0];
+console.log(`Running go chaff version: ${goChaffVersion}`);
 
 const compileGoWasmPlugin: Plugin = {
   name: 'compile-go-wasm',
@@ -74,6 +91,10 @@ const compileGoWasmPlugin: Plugin = {
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), compileGoWasmPlugin],
+  define: {
+    __GO_CHAFF_VERSION__: JSON.stringify(goChaffVersion),
+    __BUILD_DATE__: JSON.stringify(buildDate),
+  },
   assetsInclude: ['static/main.wasm'],
   resolve: {
     alias: {

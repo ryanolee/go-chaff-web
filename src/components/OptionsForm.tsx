@@ -13,17 +13,14 @@ const darkTheme = createTheme({
         mode: 'dark',
         background: {
             default: '#1e1e1e',
-            paper: '#252525',
+            paper: '#1e1e1e',
         },
         primary: {
             main: '#569cd6',
         },
-        secondary: {
-            main: '#4ec9b0',
-        },
         text: {
-            primary: '#e0e0e0',
-            secondary: '#999',
+            primary: '#d4d4d4',
+            secondary: '#858585',
         },
         divider: '#333',
     },
@@ -35,47 +32,25 @@ const darkTheme = createTheme({
         MuiCssBaseline: {
             styleOverrides: {
                 body: {
-                    backgroundColor: 'transparent',
+                    backgroundColor: '#1e1e1e',
+                    color: '#d4d4d4',
                 },
             },
         },
         MuiPaper: {
             styleOverrides: {
-                root: {
-                    backgroundImage: 'none',
-                },
+                root: { backgroundImage: 'none' },
             },
         },
         MuiTextField: {
-            defaultProps: {
-                variant: 'outlined',
-                size: 'small',
-            },
+            defaultProps: { variant: 'outlined', size: 'small' },
         },
         MuiOutlinedInput: {
             styleOverrides: {
                 root: {
                     fontSize: '0.85rem',
-                    '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: '#333',
-                    },
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                        borderColor: '#569cd6',
-                    },
-                },
-            },
-        },
-        MuiInputLabel: {
-            styleOverrides: {
-                root: {
-                    fontSize: '0.85rem',
-                },
-            },
-        },
-        MuiFormLabel: {
-            styleOverrides: {
-                root: {
-                    color: '#999',
+                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#333' },
+                    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#569cd6' },
                 },
             },
         },
@@ -83,9 +58,7 @@ const darkTheme = createTheme({
             styleOverrides: {
                 root: {
                     color: '#555',
-                    '&.Mui-checked': {
-                        color: '#569cd6',
-                    },
+                    '&.Mui-checked': { color: '#569cd6' },
                 },
             },
         },
@@ -93,11 +66,9 @@ const darkTheme = createTheme({
             styleOverrides: {
                 root: {
                     backgroundColor: '#1e1e1e',
-                    borderRadius: '4px',
-                    '&:before': {
-                        display: 'none',
-                    },
+                    '&:before': { display: 'none' },
                     border: '1px solid #333',
+                    borderRadius: '4px',
                 },
             },
         },
@@ -105,40 +76,17 @@ const darkTheme = createTheme({
             styleOverrides: {
                 root: {
                     minHeight: 36,
-                    '&.Mui-expanded': {
-                        minHeight: 36,
-                        borderBottom: '1px solid #333',
-                    },
+                    '&.Mui-expanded': { minHeight: 36, borderBottom: '1px solid #333' },
                 },
                 content: {
                     margin: '6px 0',
-                    '&.Mui-expanded': {
-                        margin: '6px 0',
-                    },
+                    '&.Mui-expanded': { margin: '6px 0' },
                 },
             },
         },
         MuiButton: {
             styleOverrides: {
-                root: {
-                    textTransform: 'none',
-                    fontSize: '0.8rem',
-                },
-            },
-        },
-        MuiTypography: {
-            styleOverrides: {
-                root: {
-                    color: '#e0e0e0',
-                },
-            },
-        },
-        MuiFormHelperText: {
-            styleOverrides: {
-                root: {
-                    fontSize: '0.7rem',
-                    color: '#777',
-                },
+                root: { textTransform: 'none', fontSize: '0.8rem' },
             },
         },
     },
@@ -159,33 +107,28 @@ export const OptionsForm = ({ onChange }: OptionsFormProps) => {
 
     return (
         <ThemeProvider theme={darkTheme}>
-            <CssBaseline enableColorScheme />
+            <CssBaseline />
             <Box
                 sx={{
                     height: '100%',
                     overflowY: 'auto',
+                    backgroundColor: '#1e1e1e',
+                    color: '#d4d4d4',
                     px: 2,
                     py: 1.5,
-                    '& .MuiGrid2-root': {
-                        gap: '4px',
-                    },
-                    '& fieldset > legend': {
-                        color: '#e0e0e0',
-                        fontSize: '0.85rem',
-                        fontWeight: 600,
-                    },
-                    '& .field-description': {
-                        fontSize: '0.75rem',
-                        color: '#777',
-                        mb: 0.5,
-                    },
+                    '& .MuiGrid2-root': { gap: '4px' },
+                    '& .MuiFormLabel-root': { color: '#d4d4d4' },
+                    '& .MuiFormHelperText-root': { color: '#858585' },
+                    '& .MuiTypography-root': { color: '#d4d4d4' },
+                    '& .MuiInputBase-input': { color: '#d4d4d4' },
+                    '& fieldset > legend': { color: '#d4d4d4' },
                 }}
             >
                 <Typography
-                    variant="subtitle1"
+                    variant="h6"
                     sx={{
                         fontWeight: 600,
-                        color: '#e0e0e0',
+                        color: '#d4d4d4',
                         mb: 1,
                         pb: 0.75,
                         borderBottom: '1px solid #333',

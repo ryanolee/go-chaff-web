@@ -1,0 +1,147 @@
+/* Status pill container */
+.status-pill-container {
+    position: relative;
+}
+
+/* Base pill styles */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.15rem 0.5rem;
+    border: none;
+    border-radius: 9999px;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 1;
+    transition: background-color 0.15s;
+}
+
+/* Error variant */
+.status-pill--error {
+    background-color: #5c2020;
+    color: #f48771;
+}
+
+.status-pill--error:hover {
+    background-color: #6e2a2a;
+}
+
+/* Success variant */
+.status-pill--success {
+    background-color: #1e3a1e;
+    color: #73c991;
+}
+
+.status-pill--success:hover {
+    background-color: #264f26;
+}
+
+/* Icon */
+.status-pill__icon {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+}
+
+/* Dropdown panel */
+.status-pill__dropdown {
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    right: 0;
+    width: 360px;
+    max-height: 280px;
+    display: flex;
+    flex-direction: column;
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+/* Header */
+.status-pill__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #333;
+    flex-shrink: 0;
+}
+
+.status-pill__header span {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-pill__header--error span {
+    color: #f48771;
+}
+
+.status-pill__header--success span {
+    color: #73c991;
+}
+
+.status-pill__header button {
+    background: none;
+    border: none;
+    color: #858585;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    line-height: 1;
+}
+
+.status-pill__header button:hover {
+    color: #d4d4d4;
+    background-color: #2a2a2a;
+}
+
+/* List */
+.status-pill__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.status-pill__list li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.4rem 0.75rem;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.status-pill__list li:last-child {
+    border-bottom: none;
+}
+
+.status-pill__list code {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: #569cd6;
+    word-break: break-all;
+}
+
+.status-pill__list span {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 0.85rem;
+    color: #d4d4d4;
+    line-height: 1.4;
+}
+
+/* Empty state message */
+.status-pill__empty {
+    padding: 0.75rem;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 0.85rem;
+    color: #73c991;
+    text-align: center;
+}

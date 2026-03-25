@@ -19,6 +19,8 @@
     "@rjsf/utils": "^6.4.1",
     "@rjsf/validator-ajv8": "^6.4.1",
     "@tailwindcss/vite": "^4.2.2",
+    "ajv": "^8.18.0",
+    "ajv-formats": "^3.0.1",
     "monaco-editor": "^0.55.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

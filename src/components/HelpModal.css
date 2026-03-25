@@ -1,0 +1,97 @@
+/* Help content body styles (modal chrome is in Modal.css) */
+
+.help-content {
+    padding: 1rem 1.25rem;
+}
+
+.help-content__disclaimer {
+    background-color: #3b2e1a;
+    border: 1px solid #6e5530;
+    border-radius: 6px;
+    padding: 0.65rem 0.85rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.85rem;
+    color: #e0c88a;
+    line-height: 1.5;
+}
+
+.help-content__disclaimer strong {
+    color: #f0c040;
+}
+
+.help-content__section {
+    margin-bottom: 1.25rem;
+}
+
+.help-content__section:last-child {
+    margin-bottom: 0;
+}
+
+.help-content__section h3 {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin: 0 0 0.5rem 0;
+}
+
+.help-content__section p,
+.help-content__section li {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #d4d4d4;
+    margin: 0 0 0.25rem 0;
+}
+
+.help-content__section ul,
+.help-content__section ol {
+    margin: 0;
+    padding-left: 1.25rem;
+}
+
+.help-content__section a {
+    color: #569cd6;
+    text-decoration: none;
+}
+
+.help-content__section a:hover {
+    text-decoration: underline;
+}
+
+.help-content__section code {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.8rem;
+    background-color: #2a2a2a;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    color: #ce9178;
+}
+
+.help-content__shortcuts {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.help-content__shortcuts td {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 0.85rem;
+    padding: 0.3rem 0.5rem;
+    border-bottom: 1px solid #2a2a2a;
+    color: #d4d4d4;
+}
+
+.help-content__shortcuts td:first-child {
+    white-space: nowrap;
+    width: 1%;
+}
+
+.help-content__shortcuts kbd {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.75rem;
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 3px;
+    padding: 0.1rem 0.4rem;
+    color: #d4d4d4;
+}
