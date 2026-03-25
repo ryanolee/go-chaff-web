@@ -10,17 +10,40 @@
 .json-output-toolbar {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: space-between;
     padding: 0.4rem 0.75rem;
     background-color: #252526;
     border-bottom: 1px solid #333;
     flex-shrink: 0;
 }
 
+.json-output-toolbar__left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 .json-output-toolbar span {
     font-size: 0.75rem;
     color: #858585;
     user-select: none;
+}
+
+.json-output-toolbar__stats {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.json-output-toolbar__stats span {
+    font-size: 0.7rem;
+    color: #858585;
+}
+
+.json-output-toolbar__stats strong {
+    color: #999;
+    font-weight: 600;
 }
 
 .json-output-toggle {

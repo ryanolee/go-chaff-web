@@ -4,8 +4,10 @@ import (
 	_ "crypto/sha512"
 	"encoding/json"
 	"hash/crc64"
+	"math"
 	"strconv"
 	"syscall/js"
+	"time"
 
 	"github.com/ryanolee/go-chaff"
 	"github.com/ryanolee/go-chaff-web/go/wasm/types"
@@ -13,33 +15,48 @@ import (
 
 const MAX_CACHE_SIZE = 30
 
-type compiledSchemaRegistry struct {
-	schemas map[string]*chaff.RootGenerator
-}
+type (
+	compilerMetadata struct {
+		generator         *chaff.RootGenerator
+		compilationTimeMs float64
+	}
+	compiledSchemaRegistry struct {
+		schemas map[string]*compilerMetadata
+	}
+)
 
 var registry = compiledSchemaRegistry{
-	schemas: make(map[string]*chaff.RootGenerator),
+	schemas: make(map[string]*compilerMetadata),
 }
 var table = crc64.MakeTable(crc64.ECMA)
 
-func (r *compiledSchemaRegistry) GetOrCompile(opts *types.GoChaffOptions) (*chaff.RootGenerator, error) {
+func (r *compiledSchemaRegistry) GetOrCompile(opts *types.GoChaffOptions) (*compilerMetadata, error) {
 	// Clear the cache if it exceeds the maximum size to prevent memory bloat
 	if len(r.schemas) > MAX_CACHE_SIZE {
-		r.schemas = make(map[string]*chaff.RootGenerator)
+		r.schemas = make(map[string]*compilerMetadata)
 	}
 
 	if generator, exists := r.schemas[opts.Hash]; exists {
 		return generator, nil
 	}
 
-	generator, _ := chaff.ParseSchemaString(opts.Schema, &opts.Opts.ParserOptions)
+	compileTimeStart := time.Now().UnixNano()
+	generator, err := chaff.ParseSchemaString(opts.Schema, &opts.Opts.ParserOptions)
+	compileTime := time.Now().UnixNano() - compileTimeStart
+	compilerMetadata := compilerMetadata{
+		generator:         &generator,
+		compilationTimeMs: math.Round(float64(compileTime)/float64(time.Millisecond)*100) / 100,
+	}
+	if err != nil {
+		return &compilerMetadata, err
+	}
 
-	r.schemas[opts.Hash] = &generator
-	return &generator, nil
+	r.schemas[opts.Hash] = &compilerMetadata
+	return &compilerMetadata, nil
 }
 
 func main() {
-	done := make(chan struct{}, 0)
+	done := make(chan struct{})
 	js.Global().Set("goChaff", js.FuncOf(handleGoChaffInPromise))
 	<-done
 }
@@ -84,17 +101,21 @@ func goChaff(res js.Value, rej js.Value, args []js.Value) {
 		return
 	}
 
-	generator, err := registry.GetOrCompile(opts)
+	generatorMetadata, err := registry.GetOrCompile(opts)
 	if err != nil {
 		rej.Invoke(jsError("Failed to compile schema: " + err.Error()))
 		return
 	}
 
-	result := generator.Generate(&opts.Opts.GeneratorOptions)
+	generationTimeStart := time.Now().UnixNano()
+	result := generatorMetadata.generator.Generate(&opts.Opts.GeneratorOptions)
+	generationTime := time.Now().UnixNano() - generationTimeStart
 
 	output := types.GoChaffOutput{
-		Result: result,
-		Errors: collectErrors(generator),
+		Result:            result,
+		Errors:            collectErrors(generatorMetadata.generator),
+		GenerationTimeMs:  math.Round(float64(generationTime)/float64(time.Millisecond)*100) / 100,
+		CompilationTimeMs: generatorMetadata.compilationTimeMs,
 	}
 
 	jsonBytes, err := json.Marshal(output)

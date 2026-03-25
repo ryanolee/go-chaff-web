@@ -15,7 +15,9 @@ type (
 	}
 
 	GoChaffOutput struct {
-		Result interface{}       `json:"result"`
-		Errors map[string]string `json:"errors"`
+		Result            interface{}       `json:"result"`
+		Errors            map[string]string `json:"errors"`
+		GenerationTimeMs  float64           `json:"generationTimeMs"`
+		CompilationTimeMs float64           `json:"compilationTimeMs"`
 	}
 )

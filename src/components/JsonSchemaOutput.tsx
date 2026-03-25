@@ -1,6 +1,9 @@
 import JsonViewer from '@microlink/react-json-view'
 import { Editor } from '@monaco-editor/react'
 import { useState, useMemo } from 'react'
+import type { GoChaffOutput } from '@go/types/GoChaffOutput'
+import { StatusPill, type StatusPillItem } from './StatusPill'
+import { useSchemaValidation } from '../hooks/useSchemaValidation'
 import './JsonSchemaOutput.css'
 
 const monacoDarkTheme = {
@@ -23,12 +26,29 @@ const monacoDarkTheme = {
 }
 
 interface JsonSchemaOutputProps {
-    src: object;
+    output: GoChaffOutput | null;
+    schema: string;
 }
 
-export const JsonSchemaOutput = ({src}: JsonSchemaOutputProps) => {
+type OpenPill = 'errors' | 'validation' | null
+
+export const JsonSchemaOutput = ({output, schema}: JsonSchemaOutputProps) => {
     const [rawView, setRawView] = useState(false)
-    const formattedJson = useMemo(() => JSON.stringify(src, null, 2), [src])
+    const [openPill, setOpenPill] = useState<OpenPill>(null)
+    const result = output?.result ?? null
+    const src = (typeof result === 'object' && result !== null ? result : { root: result }) as Record<string, unknown>
+    const formattedJson = useMemo(() => JSON.stringify(result, null, 2), [result])
+
+    const errorItems: StatusPillItem[] = useMemo(
+        () => Object.entries(output?.errors ?? {}).map(([path, msg]) => ({ key: path, label: path, detail: msg })),
+        [output?.errors]
+    )
+
+    const validation = useSchemaValidation(schema, result)
+    const validationItems: StatusPillItem[] = useMemo(
+        () => (validation?.errors ?? []).map((err, i) => ({ key: `${err.path}-${i}`, label: err.path, detail: err.message })),
+        [validation?.errors]
+    )
 
     return (
         <div className="json-output-container">
@@ -58,16 +78,56 @@ export const JsonSchemaOutput = ({src}: JsonSchemaOutputProps) => {
                 )}
             </div>
             <div className="json-output-toolbar">
-                <span>Tree</span>
-                <label className="json-output-toggle">
-                    <input
-                        type="checkbox"
-                        checked={rawView}
-                        onChange={(e) => setRawView(e.target.checked)}
-                    />
-                    <span className="toggle-track" />
-                </label>
-                <span>Raw</span>
+                <div className="json-output-toolbar__left">
+                    <span>Tree</span>
+                    <label className="json-output-toggle">
+                        <input
+                            type="checkbox"
+                            checked={rawView}
+                            onChange={(e) => setRawView(e.target.checked)}
+                        />
+                        <span className="toggle-track" />
+                    </label>
+                    <span>Raw</span>
+                </div>
+                {output && (
+                    <div className="json-output-toolbar__stats">
+                        <span>compile <strong>{output.compilationTimeMs === 0 ? '<1' : output.compilationTimeMs}ms</strong></span>
+                        <span>generate <strong>{output.generationTimeMs === 0 ? '<1' : output.generationTimeMs}ms</strong></span>
+                        {errorItems.length > 0 && (
+                            <StatusPill
+                                variant="error"
+                                count={errorItems.length}
+                                items={errorItems}
+                                title="Generation Errors"
+                                open={openPill === 'errors'}
+                                onToggle={(v) => setOpenPill(v ? 'errors' : null)}
+                            />
+                        )}
+                        {validation && (
+                            validation.valid ? (
+                                <StatusPill
+                                    variant="success"
+                                    count={0}
+                                    items={[]}
+                                    title="Schema Validation"
+                                    emptyMessage="Generated output matches the schema"
+                                    open={openPill === 'validation'}
+                                    onToggle={(v) => setOpenPill(v ? 'validation' : null)}
+                                />
+                            ) : (
+                                <StatusPill
+                                    variant="error"
+                                    count={validationItems.length}
+                                    items={validationItems}
+                                    title="Validation Errors"
+                                    open={openPill === 'validation'}
+                                    onToggle={(v) => setOpenPill(v ? 'validation' : null)}
+                                />
+                            )
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     )
