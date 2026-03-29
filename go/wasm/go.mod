@@ -2,7 +2,7 @@ module github.com/ryanolee/go-chaff-web/go/wasm
 
 go 1.25.8
 
-require github.com/ryanolee/go-chaff v0.3.2
+require github.com/ryanolee/go-chaff v0.3.4
 
 require (
 	github.com/go-faker/faker/v4 v4.6.1 // indirect
