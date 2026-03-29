@@ -40,6 +40,11 @@ func (r *compiledSchemaRegistry) GetOrCompile(opts *types.GoChaffOptions) (*comp
 		return generator, nil
 	}
 
+	// Force a default not requiring FS access since that's not available in WASM
+	if opts.Opts.ParserOptions.RelativeTo == "" {
+		opts.Opts.ParserOptions.RelativeTo = "schema://go-chaff-web/"
+	}
+
 	compileTimeStart := time.Now().UnixNano()
 	generator, err := chaff.ParseSchemaString(opts.Schema, &opts.Opts.ParserOptions)
 	compileTime := time.Now().UnixNano() - compileTimeStart

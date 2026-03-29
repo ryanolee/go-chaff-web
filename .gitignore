@@ -3,3 +3,4 @@ dist
 go/codegen/schemas/*
 go/codegen/types/*
 static/main.wasm
+.vscode
