@@ -19,6 +19,19 @@
     color: #f0c040;
 }
 
+.help-content__disclaimer a {
+    color: #f48771;
+    text-decoration: underline;
+    text-decoration-color: rgba(244, 135, 113, 0.4);
+    text-underline-offset: 2px;
+    transition: color 0.15s, text-decoration-color 0.15s;
+}
+
+.help-content__disclaimer a:hover {
+    color: #ff6e59;
+    text-decoration-color: #ff6e59;
+}
+
 .help-content__section {
     margin-bottom: 1.25rem;
 }
