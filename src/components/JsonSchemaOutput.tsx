@@ -33,7 +33,7 @@ interface JsonSchemaOutputProps {
 type OpenPill = 'errors' | 'validation' | null
 
 export const JsonSchemaOutput = ({output, schema}: JsonSchemaOutputProps) => {
-    const [rawView, setRawView] = useState(false)
+    const [rawView, setRawView] = useState(true)
     const [openPill, setOpenPill] = useState<OpenPill>(null)
     const result = output?.result ?? null
     const src = (typeof result === 'object' && result !== null ? result : { root: result }) as Record<string, unknown>
@@ -73,7 +73,7 @@ export const JsonSchemaOutput = ({output, schema}: JsonSchemaOutputProps) => {
                     />
                 ) : (
                     <div className="json-viewer-wrapper">
-                        <JsonViewer src={src} theme={monacoDarkTheme} />
+                        <JsonViewer src={src} theme={monacoDarkTheme} name={false} />
                     </div>
                 )}
             </div>
